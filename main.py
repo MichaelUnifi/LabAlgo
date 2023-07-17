@@ -8,10 +8,10 @@ import numpy as np
 import pandas as pd
 import os
 
-n_nodes_1 = 3001
+n_nodes_1 = 5050
 n_repeats = 30
 step_1 = 50
-n_nodes_2 = 10001
+n_nodes_2 = 15100
 step_2 = 100
 
 
@@ -87,7 +87,7 @@ def empty_directory(directory):
         os.remove(path)
 
 def main():
-
+    # Test 1
     x_axis = range(step_1, n_nodes_1, step_1)
     nw_times = np.zeros(len(x_axis))
     w_times = np.zeros(len(x_axis))
@@ -107,7 +107,7 @@ def main():
     empty_directory("imgs")
 
     empty_directory("tables")
-
+    #plot test 1
     plt.clf()
     plt.plot(x_axis, nw_times, color="blue", label="Not Weighted List")
     plt.plot(x_axis, w_times, color="red", label="Weighted List")
@@ -116,53 +116,45 @@ def main():
     plt.ylabel("Time (ms)")
     plt.title("Connected components find comparison")
     plt.legend()
-    plt.show()
-
     plt.savefig("imgs/union_comparison.png")
-
-    plt.clf()
-    plt.plot(x_axis, nw_times, color="blue", label="Not Weighted List")
-    plt.xlabel("Number of Nodes")
-    plt.ylabel("Time (ms)")
-    plt.title("Not Weighted List Connected components")
     plt.show()
-
-    plt.savefig("imgs/not_weighted_list.png")
-
-    plt.clf()
-    plt.plot(x_axis, w_times, color="red", label="Weighted List")
-    plt.xlabel("Number of Nodes")
-    plt.ylabel("Time (ms)")
-    plt.title("Weighted List Connected components")
-    plt.show()
-
-    plt.savefig("imgs/weighted_list.png")
-
-    plt.clf()
-    plt.plot(x_axis, f_times, color="green", label="Disjoint Forest")
-    plt.xlabel("Number of Nodes")
-    plt.ylabel("Time (ms)")
-    plt.title("Disjoint Forest Connected components")
-    plt.show()
-
-    plt.savefig("imgs/disjoint_forest.png")
-
-    data = {'Number of Nodes': x_axis, 'Not Weighted List': nw_times, 'Weighted List': w_times,
-            'Disjoint Forest': f_times}
+    #create table, split in 3 parts
+    data = {'Number of Nodes': x_axis, 'Not Weighted List': nw_times, 'Weighted List': w_times, 'Disjoint Forest': f_times}
     df = pd.DataFrame(data)
-    df.to_csv('disjoint_set.csv', index=False)
+    df1 = df.iloc[:40, :]
+    df2 = df.iloc[40:70, :]
+    df3 = df.iloc[70:, :]
 
     plt.clf()
-    plt.figure(figsize=(10,18))
+    plt.figure(figsize=(10, 10))
     plt.title("Table of results")
     plt.axis('off')
-    table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+    table = plt.table(cellText=df1.values, colLabels=df1.columns, loc='center')
     table.auto_set_font_size(False)
     table.set_fontsize(12)
-    plt.savefig('tables/table.png')
+    plt.savefig('tables/table_1.png')
     plt.show()
 
+    plt.clf()
+    plt.figure(figsize=(10, 7))
+    plt.axis('off')
+    table = plt.table(cellText=df2.values, colLabels=df2.columns, loc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    plt.savefig('tables/table_2.png')
+    plt.show()
+    plt.clf()
 
+
+    plt.figure(figsize=(10, 7))
+    plt.axis('off')
+    table = plt.table(cellText=df3.values, colLabels=df3.columns, loc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    plt.savefig('tables/table_3.png')
+    plt.show()
+
+    # Test 2
     x_axis = range(step_2, n_nodes_2, step_2)
     w_times = np.zeros(len(x_axis))
     f_times = np.zeros(len(x_axis))
@@ -171,7 +163,7 @@ def main():
         f_times += forest_test(n_nodes_2, step_2)
     w_times /= n_repeats
     f_times /= n_repeats
-
+    # plot test 2
     plt.clf()
     plt.plot(x_axis, w_times, color="red", label="Weighted List")
     plt.plot(x_axis, f_times, color="green", label="Disjoint Forest")
@@ -179,9 +171,10 @@ def main():
     plt.ylabel("Time (ms)")
     plt.title("Improved Data Structures Comparison")
     plt.legend()
+    plt.savefig("imgs/improved_comparison.png")
     plt.show()
 
-    plt.savefig("imgs/improved_comparison.png")
+
 
 
 if __name__ == '__main__':
