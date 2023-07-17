@@ -8,10 +8,10 @@ import numpy as np
 import pandas as pd
 import os
 
-n_nodes_1 = 5050
+n_nodes_1 = 1050
 n_repeats = 30
 step_1 = 50
-n_nodes_2 = 15100
+n_nodes_2 = 2100
 step_2 = 100
 
 
@@ -120,39 +120,48 @@ def main():
     plt.show()
     #create table, split in 3 parts
     data = {'Number of Nodes': x_axis, 'Not Weighted List': nw_times, 'Weighted List': w_times, 'Disjoint Forest': f_times}
+
     df = pd.DataFrame(data)
-    df1 = df.iloc[:40, :]
-    df2 = df.iloc[40:70, :]
-    df3 = df.iloc[70:, :]
+    if len(df.columns)>50:
+        df1 = df.iloc[:40, :]
+        df2 = df.iloc[40:70, :]
+        df3 = df.iloc[70:, :]
+        plt.clf()
+        plt.figure(figsize=(10, 10))
+        plt.title("Table of results")
+        plt.axis('off')
+        table = plt.table(cellText=df1.values, colLabels=df1.columns, loc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(12)
+        plt.savefig('tables/table_1.png')
+        plt.show()
 
-    plt.clf()
-    plt.figure(figsize=(10, 10))
-    plt.title("Table of results")
-    plt.axis('off')
-    table = plt.table(cellText=df1.values, colLabels=df1.columns, loc='center')
-    table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    plt.savefig('tables/table_1.png')
-    plt.show()
+        plt.clf()
+        plt.figure(figsize=(10, 7))
+        plt.axis('off')
+        table = plt.table(cellText=df2.values, colLabels=df2.columns, loc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(12)
+        plt.savefig('tables/table_2.png')
+        plt.show()
 
-    plt.clf()
-    plt.figure(figsize=(10, 7))
-    plt.axis('off')
-    table = plt.table(cellText=df2.values, colLabels=df2.columns, loc='center')
-    table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    plt.savefig('tables/table_2.png')
-    plt.show()
-    plt.clf()
-
-
-    plt.figure(figsize=(10, 7))
-    plt.axis('off')
-    table = plt.table(cellText=df3.values, colLabels=df3.columns, loc='center')
-    table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    plt.savefig('tables/table_3.png')
-    plt.show()
+        plt.clf()
+        plt.figure(figsize=(10, 7))
+        plt.axis('off')
+        table = plt.table(cellText=df3.values, colLabels=df3.columns, loc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(12)
+        plt.savefig('tables/table_3.png')
+        plt.show()
+    else:
+        plt.clf()
+        plt.figure(figsize=(10, 7))
+        plt.axis('off')
+        table = plt.table(cellText=df.values, colLabels=df.columns, loc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(12)
+        plt.savefig('tables/table.png')
+        plt.show()
 
     # Test 2
     x_axis = range(step_2, n_nodes_2, step_2)
