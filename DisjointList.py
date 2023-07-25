@@ -1,11 +1,13 @@
-class Node:
-    def __init__(self, key):
-        self.key = key
+import Graph
+
+class Object:
+    def __init__(self, node):
+        self.node = node
         self.next = None
         self.list = None
 
-    def getKey(self):
-        return self.key
+    def getNode(self):
+        return self.node
 
     def getNext(self):
         return self.next
@@ -28,38 +30,51 @@ class ListSet:
         return self.set
 
     def makeSet(self, node):
-        list = List(node)
+        obj = Object(node)
+        node.setObject(obj)
+        list = List(obj)
         self.set.append(list)
 
+    def findSet(self, obj):
+        return obj.list.head
 
-    def findSet(self, node):
-        return node.getList().getHead()
-
-    def union(self, node1, node2):
-        list1 = node1.getList()
-        list2 = node2.getList()
+    def union(self, obj1, obj2):
+        list1 = obj1.getList()
+        list2 = obj2.getList()
         self.set.remove(list2)
-        list1.getTail().setNext(list2.getHead())
-        list1.setTail(list2.getTail())
-        node = list2.getHead()
+        list1.tail.setNext(list2.head)
+        list1.setTail(list2.tail)
+        node = list2.head
         while node != None:
             node.setList(list1)
-            node = node.getNext()
-        list1.setSize(list1.getSize() + list2.getSize())
+            node = node.next
+        list1.setSize(list1.size + list2.size)
 
-    def weightedUnion(self, node1, node2):
-        if node1.getList().getSize() >= node2.getList().getSize():
-            self.union(node1, node2)
+    def weightedUnion(self, obj1, obj2):
+        if obj1.list.size >= obj2.list.size:
+            self.union(obj1, obj2)
         else:
-            self.union(node2, node1)
+            self.union(obj2, obj1)
+
+    def get_components(self):
+        components = []
+        for list in self.set:
+            components.append(list.head.node.getKey())
+        return len(components)
+
+    def get_components_size(self):
+        components = []
+        for list in self.set:
+            components.append(list.size)
+        return components
 
 
 class List:
-    def __init__(self, node):
-        self.head = node
-        self.tail = node
+    def __init__(self, obj):
+        self.head = obj
+        self.tail = obj
         self.size=1
-        node.setList(self)
+        obj.setList(self)
 
     def getHead(self):
         return self.head
@@ -67,11 +82,11 @@ class List:
     def getTail(self):
         return self.tail
 
-    def setHead(self, node):
-        self.head = node
+    def setHead(self, obj):
+        self.head = obj
 
-    def setTail(self, node):
-        self.tail = node
+    def setTail(self, obj):
+        self.tail = obj
 
     def getSize(self):
         return self.size
